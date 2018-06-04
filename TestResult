@@ -1,1 +1,4 @@
 
+com.sap.conn.jco.JCoException: (104) JCO_ERROR_SYSTEM_FAILURE: Error at assignment: Overwritten protected field. (Remote shortdump: MOVE_TO_LIT_NOTALLOWED_NODATA in system WSY|uxgwe356)
+Root Exception stack trace:
+com.sap.conn.rfc.exceptions.RfcGetException: Error at assignment: Overwritten protected field.
