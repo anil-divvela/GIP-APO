@@ -1,2 +1,195 @@
-Root Exception stack trace:
 com.sap.conn.rfc.exceptions.RfcGetException: Unable to interpret MARC as a number.
+
+<?xml version='1.0' encoding='UTF-8'?>
+<ZZVINT_RFC_INBOUND_DATA>
+  <import>
+    <DELIMITER>;</DELIMITER>
+    <QUERY_TABLE>MARC</QUERY_TABLE>
+    <ZZVAPOSYS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+    <ZZVECCSYS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+    <ZZVERTZONE>AB</ZZVERTZONE>
+    <ZZVINTNAME>MATERIAL_MASTER</ZZVINTNAME>
+    <ZZVLOGID>ABMAT0000000024</ZZVLOGID>
+    <ZZVMULESYS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+    <ZZVSQLSYS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+    <ZZVSTEP>2</ZZVSTEP>
+  </import>
+  <tables>
+    <FIELDS>
+      <row>
+        <FIELDNAME>AUSSS</FIELDNAME>
+        <OFFSET>000000</OFFSET>
+        <LENGTH>000005</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Assembly scrap in percent</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>BESKZ</FIELDNAME>
+        <OFFSET>000006</OFFSET>
+        <LENGTH>000001</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Procurement Type</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>BSTMA</FIELDNAME>
+        <OFFSET>000008</OFFSET>
+        <LENGTH>000013</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Maximum Lot Size</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>BSTMI</FIELDNAME>
+        <OFFSET>000022</OFFSET>
+        <LENGTH>000013</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Minimum Lot Size</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>BSTRF</FIELDNAME>
+        <OFFSET>000036</OFFSET>
+        <LENGTH>000013</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Rounding value for purchase order quantity</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>DISLS</FIELDNAME>
+        <OFFSET>000050</OFFSET>
+        <LENGTH>000002</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Lot size (materials planning)</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>DISMM</FIELDNAME>
+        <OFFSET>000053</OFFSET>
+        <LENGTH>000002</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>MRP Type</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>EISBE</FIELDNAME>
+        <OFFSET>000056</OFFSET>
+        <LENGTH>000013</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Safety Stock</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>EISLO</FIELDNAME>
+        <OFFSET>000070</OFFSET>
+        <LENGTH>000013</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Minimum Safety Stock</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>FHORI</FIELDNAME>
+        <OFFSET>000084</OFFSET>
+        <LENGTH>000003</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Scheduling Margin Key for Floats</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>LGRAD</FIELDNAME>
+        <OFFSET>000088</OFFSET>
+        <LENGTH>000003</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Service level</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>MABST</FIELDNAME>
+        <OFFSET>000092</OFFSET>
+        <LENGTH>000013</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Maximum stock level</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>MATNR</FIELDNAME>
+        <OFFSET>000106</OFFSET>
+        <LENGTH>000018</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Material Number</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>MMSTA</FIELDNAME>
+        <OFFSET>000125</OFFSET>
+        <LENGTH>000002</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Plant-Specific Material Status</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>MRPPP</FIELDNAME>
+        <OFFSET>000128</OFFSET>
+        <LENGTH>000003</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>PPC planning calendar</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>PLIFZ</FIELDNAME>
+        <OFFSET>000132</OFFSET>
+        <LENGTH>000003</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Planned Delivery Time in Days</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>RDPRF</FIELDNAME>
+        <OFFSET>000136</OFFSET>
+        <LENGTH>000004</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Rounding Profile</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>RWPRO</FIELDNAME>
+        <OFFSET>000141</OFFSET>
+        <LENGTH>000003</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Range of coverage profile</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>SHFLG</FIELDNAME>
+        <OFFSET>000145</OFFSET>
+        <LENGTH>000001</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Safety time indicator (with or without safety time)</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>SHZET</FIELDNAME>
+        <OFFSET>000147</OFFSET>
+        <LENGTH>000002</LENGTH>
+        <TYPE>N</TYPE>
+        <FIELDTEXT>Safety time (in workdays)</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>STRGR</FIELDNAME>
+        <OFFSET>000150</OFFSET>
+        <LENGTH>000002</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Planning strategy group</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>WEBAZ</FIELDNAME>
+        <OFFSET>000153</OFFSET>
+        <LENGTH>000003</LENGTH>
+        <TYPE>P</TYPE>
+        <FIELDTEXT>Goods Receipt Processing Time in Days</FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>WERKS</FIELDNAME>
+        <OFFSET>000157</OFFSET>
+        <LENGTH>000004</LENGTH>
+        <TYPE>C</TYPE>
+        <FIELDTEXT>Plant</FIELDTEXT>
+      </row>
+    </FIELDS>
+    <MULE_DATA>
+      <row>
+        <WA>MARC</WA>
+      </row>
+    </MULE_DATA>
+    <OPTIONS>
+      <row>
+        <TEXT>MATNR = '000000000000044871' OR</TEXT>
+      </row>
+      <row>
+        <TEXT>MATNR = '000000000000048993'</TEXT>
+      </row>
+    </OPTIONS>
+  </tables>
+</ZZVINT_RFC_INBOUND_DATA>
