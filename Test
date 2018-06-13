@@ -1,222 +1,88 @@
-com.sap.conn.jco.JCoException: (102) JCO_ERROR_COMMUNICATION: Initialization of destination vanerp@172.18.215.5:00:100-SAP2 failed: Connect to SAP gateway failed
-com.sap.conn.jco.JCoException: (102) JCO_ERROR_COMMUNICATION: Initialization of destination vanerp@172.18.215.5:00:100-SAP2 failed: Connect to SAP gateway failed
-Connection parameters: TYPE=A DEST=vanerp@172.18.215.5:00:100-SAP2 ASHOST=172.18.215.5 SYSNR=00 PCS=1
-
-LOCATION    CPIC (TCP/IP) on local host with Unicode
-ERROR       partner '172.18.215.5:3300' not reached
-TIME        Tue Jun 12 08:26:22 2018
-RELEASE     720
-COMPONENT   NI (network interface)
-VERSION     40
-RC          -10
-MODULE      nixxi.cpp
-LINE        3283
-DETAIL      NiPConnect2: 172.18.215.5:3300
-SYSTEM CALL connect
-ERRNO       10060
-ERRNO TEXT  WSAETIMEDOUT: Connection timed out
-COUNTER     2
-
-	at com.sap.conn.jco.rt.RfcDestination.initialize(RfcDestination.java:901)
-	at com.sap.conn.jco.rt.RfcDestination.ping(RfcDestination.java:1295)
-	at com.mulesoft.mule.transport.sap.jco3.SapJcoDefaultConnectionClient.validateDestination(SapJcoDefaultConnectionClient.java:100)
-	at com.mulesoft.mule.transport.sap.jco3.SapJcoDefaultConnectionClient.doInitialise(SapJcoDefaultConnectionClient.java:88)
-	at com.mulesoft.mule.transport.sap.jco3.SapJcoClientFactory.create(SapJcoClientFactory.java:60)
-	at com.mulesoft.mule.transport.sap.SapConnector.test(SapConnector.java:403)
-	at org.mule.tooling.metadata.api.utils.ConnectionTester.internalTestConnection(ConnectionTester.java:88)
-	at org.mule.tooling.metadata.api.utils.ConnectionTester.testConnectionFor(ConnectionTester.java:113)
-	at org.mule.tooling.messageflow.action.TestConnectorConnectionFromMuleConfigAction$1$1$1$1.call(TestConnectorConnectionFromMuleConfigAction.java:68)
-	at org.mule.tooling.messageflow.action.TestConnectorConnectionFromMuleConfigAction$1$1$1$1.call(TestConnectorConnectionFromMuleConfigAction.java:1)
-	at org.mule.tooling.utils.SilentRunner.run(SilentRunner.java:25)
-	at org.mule.tooling.core.StudioDesignContextRunner.runSilentWithMuleProject(StudioDesignContextRunner.java:17)
-	at org.mule.tooling.core.StudioDesignContextRunner.runSilentWithMuleProject(StudioDesignContextRunner.java:37)
-	at org.mule.tooling.messageflow.action.TestConnectorConnectionFromMuleConfigAction$1$1$1.run(TestConnectorConnectionFromMuleConfigAction.java:65)
-	at java.lang.Thread.run(Unknown Source)
-Caused by: com.sap.conn.jco.JCoException: (102) JCO_ERROR_COMMUNICATION: Connect to SAP gateway failed
-Connection parameters: TYPE=A DEST=vanerp@172.18.215.5:00:100-SAP2 ASHOST=172.18.215.5 SYSNR=00 PCS=1
-
-LOCATION    CPIC (TCP/IP) on local host with Unicode
-ERROR       partner '172.18.215.5:3300' not reached
-TIME        Tue Jun 12 08:26:22 2018
-RELEASE     720
-COMPONENT   NI (network interface)
-VERSION     40
-RC          -10
-MODULE      nixxi.cpp
-LINE        3283
-DETAIL      NiPConnect2: 172.18.215.5:3300
-SYSTEM CALL connect
-ERRNO       10060
-ERRNO TEXT  WSAETIMEDOUT: Connection timed out
-COUNTER     2
-
-	at com.sap.conn.jco.rt.MiddlewareJavaRfc.generateJCoException(MiddlewareJavaRfc.java:686)
-	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.connect(MiddlewareJavaRfc.java:1446)
-	at com.sap.conn.jco.rt.ClientConnection.connect(ClientConnection.java:723)
-	at com.sap.conn.jco.rt.PoolingFactory.init(PoolingFactory.java:115)
-	at com.sap.conn.jco.rt.ConnectionManager.createFactory(ConnectionManager.java:349)
-	at com.sap.conn.jco.rt.DefaultConnectionManager.createFactory(DefaultConnectionManager.java:46)
-	at com.sap.conn.jco.rt.ConnectionManager.getFactory(ConnectionManager.java:323)
-	at com.sap.conn.jco.rt.RfcDestination.initialize(RfcDestination.java:893)
-	... 14 more
-Caused by: RfcException:
-    message: Connect to SAP gateway failed
-Connection parameters: TYPE=A DEST=vanerp@172.18.215.5:00:100-SAP2 ASHOST=172.18.215.5 SYSNR=00 PCS=1
-
-LOCATION    CPIC (TCP/IP) on local host with Unicode
-ERROR       partner '172.18.215.5:3300' not reached
-TIME        Tue Jun 12 08:26:22 2018
-RELEASE     720
-COMPONENT   NI (network interface)
-VERSION     40
-RC          -10
-MODULE      nixxi.cpp
-LINE        3283
-DETAIL      NiPConnect2: 172.18.215.5:3300
-SYSTEM CALL connect
-ERRNO       10060
-ERRNO TEXT  WSAETIMEDOUT: Connection timed out
-COUNTER     2
-
-    return code: RFC_FAILURE (1)
-    error group: 102
-    key: RFC_ERROR_COMMUNICATION
-	at com.sap.conn.rfc.engine.RfcIoControl.error_end(RfcIoControl.java:259)
-	at com.sap.conn.rfc.engine.RfcIoControl.ab_rfcopen(RfcIoControl.java:101)
-	at com.sap.conn.rfc.api.RfcApi.RfcOpen(RfcApi.java:85)
-	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.connect(MiddlewareJavaRfc.java:1410)
-	... 20 more
-
-  java.lang.Throwable: com.sap.conn.jco.JCoException: (102) JCO_ERROR_COMMUNICATION: Initialization of destination vanerp@172.18.215.5:00:100-SAP2 failed: Connect to SAP gateway failed
-Connection parameters: TYPE=A DEST=vanerp@172.18.215.5:00:100-SAP2 ASHOST=172.18.215.5 SYSNR=00 PCS=1
-
-LOCATION    CPIC (TCP/IP) on local host with Unicode
-ERROR       partner '172.18.215.5:3300' not reached
-TIME        Tue Jun 12 08:26:22 2018
-RELEASE     720
-COMPONENT   NI (network interface)
-VERSION     40
-RC          -10
-MODULE      nixxi.cpp
-LINE        3283
-DETAIL      NiPConnect2: 172.18.215.5:3300
-SYSTEM CALL connect
-ERRNO       10060
-ERRNO TEXT  WSAETIMEDOUT: Connection timed out
-COUNTER     2
-
-  	at com.sap.conn.jco.rt.RfcDestination.initialize(RfcDestination.java:901)
-  	at com.sap.conn.jco.rt.RfcDestination.ping(RfcDestination.java:1295)
-  	at com.mulesoft.mule.transport.sap.jco3.SapJcoDefaultConnectionClient.validateDestination(SapJcoDefaultConnectionClient.java:100)
-  	at com.mulesoft.mule.transport.sap.jco3.SapJcoDefaultConnectionClient.doInitialise(SapJcoDefaultConnectionClient.java:88)
-  	at com.mulesoft.mule.transport.sap.jco3.SapJcoClientFactory.create(SapJcoClientFactory.java:60)
-  	at com.mulesoft.mule.transport.sap.SapConnector.test(SapConnector.java:403)
-  	at org.mule.tooling.metadata.api.utils.ConnectionTester.internalTestConnection(ConnectionTester.java:88)
-  	at org.mule.tooling.metadata.api.utils.ConnectionTester.testConnectionFor(ConnectionTester.java:113)
-  	at org.mule.tooling.messageflow.action.TestConnectorConnectionFromMuleConfigAction$1$1$1$1.call(TestConnectorConnectionFromMuleConfigAction.java:68)
-  	at org.mule.tooling.messageflow.action.TestConnectorConnectionFromMuleConfigAction$1$1$1$1.call(TestConnectorConnectionFromMuleConfigAction.java:1)
-  	at org.mule.tooling.utils.SilentRunner.run(SilentRunner.java:25)
-  	at org.mule.tooling.core.StudioDesignContextRunner.runSilentWithMuleProject(StudioDesignContextRunner.java:17)
-  	at org.mule.tooling.core.StudioDesignContextRunner.runSilentWithMuleProject(StudioDesignContextRunner.java:37)
-  	at org.mule.tooling.messageflow.action.TestConnectorConnectionFromMuleConfigAction$1$1$1.run(TestConnectorConnectionFromMuleConfigAction.java:65)
-  	at java.lang.Thread.run(Unknown Source)
-  Caused by: com.sap.conn.jco.JCoException: (102) JCO_ERROR_COMMUNICATION: Connect to SAP gateway failed
-Connection parameters: TYPE=A DEST=vanerp@172.18.215.5:00:100-SAP2 ASHOST=172.18.215.5 SYSNR=00 PCS=1
-
-LOCATION    CPIC (TCP/IP) on local host with Unicode
-ERROR       partner '172.18.215.5:3300' not reached
-TIME        Tue Jun 12 08:26:22 2018
-RELEASE     720
-COMPONENT   NI (network interface)
-VERSION     40
-RC          -10
-MODULE      nixxi.cpp
-LINE        3283
-DETAIL      NiPConnect2: 172.18.215.5:3300
-SYSTEM CALL connect
-ERRNO       10060
-ERRNO TEXT  WSAETIMEDOUT: Connection timed out
-COUNTER     2
-
-  	at com.sap.conn.jco.rt.MiddlewareJavaRfc.generateJCoException(MiddlewareJavaRfc.java:686)
-  	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.connect(MiddlewareJavaRfc.java:1446)
-  	at com.sap.conn.jco.rt.ClientConnection.connect(ClientConnection.java:723)
-  	at com.sap.conn.jco.rt.PoolingFactory.init(PoolingFactory.java:115)
-  	at com.sap.conn.jco.rt.ConnectionManager.createFactory(ConnectionManager.java:349)
-  	at com.sap.conn.jco.rt.DefaultConnectionManager.createFactory(DefaultConnectionManager.java:46)
-  	at com.sap.conn.jco.rt.ConnectionManager.getFactory(ConnectionManager.java:323)
-  	at com.sap.conn.jco.rt.RfcDestination.initialize(RfcDestination.java:893)
-  	... 14 more
-  Caused by: RfcException:
-    message: Connect to SAP gateway failed
-Connection parameters: TYPE=A DEST=vanerp@172.18.215.5:00:100-SAP2 ASHOST=172.18.215.5 SYSNR=00 PCS=1
-
-LOCATION    CPIC (TCP/IP) on local host with Unicode
-ERROR       partner '172.18.215.5:3300' not reached
-TIME        Tue Jun 12 08:26:22 2018
-RELEASE     720
-COMPONENT   NI (network interface)
-VERSION     40
-RC          -10
-MODULE      nixxi.cpp
-LINE        3283
-DETAIL      NiPConnect2: 172.18.215.5:3300
-SYSTEM CALL connect
-ERRNO       10060
-ERRNO TEXT  WSAETIMEDOUT: Connection timed out
-COUNTER     2
-
-    return code: RFC_FAILURE (1)
-    error group: 102
-    key: RFC_ERROR_COMMUNICATION
-  	at com.sap.conn.rfc.engine.RfcIoControl.error_end(RfcIoControl.java:259)
-  	at com.sap.conn.rfc.engine.RfcIoControl.ab_rfcopen(RfcIoControl.java:101)
-  	at com.sap.conn.rfc.api.RfcApi.RfcOpen(RfcApi.java:85)
-  	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.connect(MiddlewareJavaRfc.java:1410)
-  	... 20 more
-  
-  	at org.mule.tooling.metadata.utils.MetadataUtils.showErrorMessage(MetadataUtils.java:373)
-  	at org.mule.tooling.metadata.utils.MetadataUtils.showTestConnectionErrorMessage(MetadataUtils.java:338)
-  	at org.mule.tooling.messageflow.action.TestConnectorConnectionFromMuleConfigAction.displayResultMessage(TestConnectorConnectionFromMuleConfigAction.java:110)
-  	at org.mule.tooling.messageflow.action.TestConnectorConnectionFromMuleConfigAction.run(TestConnectorConnectionFromMuleConfigAction.java:98)
-  	at org.mule.tooling.messageflow.dialog.GlobalElementDialog$1.widgetSelected(GlobalElementDialog.java:404)
-  	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:248)
-  	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
-  	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:4362)
-  	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1113)
-  	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4180)
-  	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3769)
-  	at org.eclipse.jface.window.Window.runEventLoop(Window.java:827)
-  	at org.eclipse.jface.window.Window.open(Window.java:803)
-  	at org.mule.tooling.ui.modules.core.widgets.editors.GlobalRefEditor$EditGlobalElementAction.findAndEditGlobal(GlobalRefEditor.java:772)
-  	at org.mule.tooling.ui.modules.core.widgets.editors.GlobalRefEditor$EditGlobalElementAction.run(GlobalRefEditor.java:805)
-  	at org.eclipse.jface.action.Action.runWithEvent(Action.java:473)
-  	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:595)
-  	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:511)
-  	at org.eclipse.jface.action.ActionContributionItem$6.handleEvent(ActionContributionItem.java:462)
-  	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
-  	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:4362)
-  	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1113)
-  	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4180)
-  	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3769)
-  	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$4.run(PartRenderingEngine.java:1127)
-  	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:337)
-  	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1018)
-  	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:156)
-  	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:694)
-  	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:337)
-  	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:606)
-  	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:150)
-  	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:139)
-  	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
-  	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:134)
-  	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
-  	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:380)
-  	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:235)
-  	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-  	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-  	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-  	at java.lang.reflect.Method.invoke(Unknown Source)
-  	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:669)
-  	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:608)
-  	at org.eclipse.equinox.launcher.Main.run(Main.java:1515)
+<?xml version='1.0' encoding='windows-1252'?>
+<RFC_READ_TABLE>
+  <import>
+    <DELIMITER>;</DELIMITER>
+    <NO_DATA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+    <QUERY_TABLE>AUFK</QUERY_TABLE>
+    <ROWCOUNT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+    <ROWSKIPS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+  </import>
+  <tables>
+    <DATA/>
+    <FIELDS>
+      <row>
+        <FIELDNAME>AUART</FIELDNAME>
+        <OFFSET>000000</OFFSET>
+        <LENGTH>000000</LENGTH>
+        <TYPE></TYPE>
+        <FIELDTEXT></FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>AUFNR</FIELDNAME>
+        <OFFSET>000000</OFFSET>
+        <LENGTH>000000</LENGTH>
+        <TYPE></TYPE>
+        <FIELDTEXT></FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>AUTYP</FIELDNAME>
+        <OFFSET>000000</OFFSET>
+        <LENGTH>000000</LENGTH>
+        <TYPE></TYPE>
+        <FIELDTEXT></FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>OBJNR</FIELDNAME>
+        <OFFSET>000000</OFFSET>
+        <LENGTH>000000</LENGTH>
+        <TYPE></TYPE>
+        <FIELDTEXT></FIELDTEXT>
+      </row>
+      <row>
+        <FIELDNAME>WERKS</FIELDNAME>
+        <OFFSET>000000</OFFSET>
+        <LENGTH>000000</LENGTH>
+        <TYPE></TYPE>
+        <FIELDTEXT></FIELDTEXT>
+      </row>
+    </FIELDS>
+    <OPTIONS>
+      <row>
+        <TEXT>ERDAT IN IBT2018041420180613 AND</TEXT>
+      </row>
+      <row>
+        <TEXT>( AUART EQ 'ZV02' OR</TEXT>
+      </row>
+      <row>
+        <TEXT>AUART EQ 'ZV53' OR</TEXT>
+      </row>
+      <row>
+        <TEXT>AUART EQ 'ZV74' OR</TEXT>
+      </row>
+      <row>
+        <TEXT>AUART EQ 'ZV84' ) AND</TEXT>
+      </row>
+      <row>
+        <TEXT>AUTYP EQ '40' AND</TEXT>
+      </row>
+      <row>
+        <TEXT>( WERKS EQ 'BRV1' OR</TEXT>
+      </row>
+      <row>
+        <TEXT>WERKS EQ 'BRV3' OR</TEXT>
+      </row>
+      <row>
+        <TEXT>WERKS EQ 'BRV4' OR</TEXT>
+      </row>
+      <row>
+        <TEXT>WERKS EQ 'BRV6' )</TEXT>
+      </row>
+    </OPTIONS>
+  </tables>
+</RFC_READ_TABLE>
+Payload Type          : [B
+Element               : /abid-sap-triggerFlow/processors/6 @ abid-sap-poc:abid-sap-trigger.xml:127 (SAP-ECC)
+Element XML           : <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP1" type="function" functionName="RFC_READ_TABLE" outputXml="true" responseTimeout="10000" doc:name="SAP-ECC"></sap:outbound-endpoint>
+--------------------------------------------------------------------------------
+Root Exception stack trace:
+com.sap.conn.rfc.exceptions.RfcGetException: A condition specified at runtime has an unexpected format.
