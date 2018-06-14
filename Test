@@ -1,1 +1,3 @@
-New error
+>RfcIoException:
+    message:      Field symbol has not yet been assigned.                             
+    Return code: RFCIO_ERROR_DEALLOCATED_REMOTE_ERROR(33)<
