@@ -1,1 +1,1 @@
-ERROR 2018-06-14 05:55:17,080 [[abid-sap-poc].abid-sap-triggerFlow.stage1.04] com.mulesoft.mule.transport.sap.jco3.SapJcoTraceListener: [JCoAPI] JCoClient.execute(ZZVINT_RFC_INBOUND_DATA) threw a non-ABAP exception: com.sap.conn.jco.JCoException: (104) JCO_ERROR_SYSTEM_FAILURE:      Field symbol has not yet been assigned.                              (raised by system WSY|uxgwe356)
+New error
