@@ -1,9 +1,4 @@
-7501757
-7502560
-7519805
-43512
+#[xpath('//import/QUERY_TABLE/text()').text]
 
-Plant
-EKPO-WERKS
-BR3O
-BR1E
+flowVars.table = new ArrayList<String>(Arrays.asList(dw('p(flowVars.ZZVINTNAME)').split(',')));
+flowVars.table.remove(flowVars.QUERYTABLE)
