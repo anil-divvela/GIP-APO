@@ -1,4 +1,10 @@
-#[xpath('//import/QUERY_TABLE/text()').text]
-
-flowVars.table = new ArrayList<String>(Arrays.asList(dw('p(flowVars.ZZVINTNAME)').split(',')));
-flowVars.table.remove(flowVars.QUERYTABLE)
+((p(p(flowVars.table[flowVars.counter])) splitBy ",") map ((row) -> {
+                        row: {
+						FIELDNAME: $,
+						OFFSET: '000000',
+						LENGTH: '000000',
+						TYPE: null,
+						FIELDTEXT: null
+					}
+					
+					}))
