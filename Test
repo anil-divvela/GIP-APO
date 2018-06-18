@@ -1,10 +1,532 @@
-((p(p(flowVars.table[flowVars.counter])) splitBy ",") map ((row) -> {
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp"
+      xmlns:file="http://www.mulesoft.org/schema/mule/file"
+      xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:secure-property-placeholder="http://www.mulesoft.org/schema/mule/secure-property-placeholder" xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/secure-property-placeholder http://www.mulesoft.org/schema/mule/secure-property-placeholder/current/mule-secure-property-placeholder.xsd
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    
+   <!--  <configuration doc:name="Configuration">
+        <default-threading-profile maxThreadsActive="${default.maxthreads.active}" maxBufferSize="${default.maxBufferSize}" 
+         poolExhaustedAction="RUN" />
+     </configuration> -->
+     <!-- <asynchronous-processing-strategy name="Asynchronous_Processing_Strategy" doc:name="Asynchronous Processing Strategy" maxBufferSize="${max.buffer.size}" maxThreads="${max.threads.active}" minThreads="${max.threads.idle}" poolExhaustedAction="WAIT" threadWaitTimeout="${thread.timeout}"/> --> 
+    <configuration doc:name="Configuration">
+           <expression-language>
+               <global-functions>
+                   def addPad(input, size) {
+                       return org.mule.util.StringUtils.rightPad(input, size, " ");
+                   }
+               </global-functions>
+           </expression-language>
+       </configuration>
+    <expression-filter expression="#[flowVars['docNameList'].contains(flowVars.documentType)]" name="Expression" doc:name="Expression"/>
+    <http:listener-config name="HTTP_Listener_Configuration" host="localhost" port="8081" doc:name="HTTP Listener Configuration"/>
+      <configuration doc:name="Configuration">
+            <expression-language>
+                  <global-functions>
+                        def getName(name){
+                              return name.split("\\s+")[0]
+                        }
+                        def getLastName(name){
+                              return name.split("\\s+")[1]
+                        }
+                  </global-functions>
+            </expression-language>
+      </configuration>
+    <flow name="OutboundFileProcess" initialState="started" processingStrategy="synchronous">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP"/>
+        <set-variable variableName="plant" value="${sap.bapi.plant}" doc:name="Variable"/>
+       <set-variable variableName="plantList" value="#[Arrays.asList(flowVars['plant'].split('${splitseparator}'))]" doc:name="Variable"/>
+        <set-variable variableName="statVar" value="]" doc:name="Variable"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+---
+{
+      RFC_READ_TABLE: {
+            import: {
+                  DELIMITER: ',',
+                  NO_DATA: null,
+                  QUERY_TABLE: 'EKKO',
+                  ROWCOUNT: null,
+                  ROWSKIPS: null
+            },
+            tables: {
+                  DATA: {
                         row: {
-						FIELDNAME: $,
-						OFFSET: '000000',
-						LENGTH: '000000',
-						TYPE: null,
-						FIELDTEXT: null
-					}
-					
-					}))
+                              WA: 'EKKO'
+                        }
+                  },
+                  FIELDS: {
+                        row: {
+                              FIELDNAME:'EBELN',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'LIFNR',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'BEDAT',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        }
+                        
+                        
+                  },
+                  OPTIONS: {
+                        row: {
+                              TEXT: null
+                        }
+                  }
+            }
+      }
+}
+]]></dw:set-payload>
+        </dw:transform-message>
+        <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="RFC_READ_TABLE" outputXml="true" responseTimeout="${sap.source.responsetimeout}" doc:name="SAP"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+
+---
+flatten 
+      payload.RFC_READ_TABLE.tables.DATA.*row[1..-1] map ((data , indexOfData) -> {
+         (payload.RFC_READ_TABLE.tables.FIELDS.*row map ((field , indexOfField) -> {
+             (field.FIELDNAME) : (data.WA splitBy ",")[indexOfField]
+         })) 
+  })]]></dw:set-payload>
+        </dw:transform-message>
+        <scatter-gather doc:name="Scatter-Gather">
+             <processor-chain>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+---
+{
+      RFC_READ_TABLE: {
+            import: {
+                  DELIMITER: ',',
+                  NO_DATA: null,
+                  QUERY_TABLE: 'MSEG',
+                  ROWCOUNT: null,
+                  ROWSKIPS: null
+            },
+            tables: {
+                  DATA: {
+                        row: {
+                              WA: 'MSEG'
+                        }
+                  },
+                  FIELDS: {
+                        row: {
+                              FIELDNAME:'EBELN',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'MBLNR',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'MJAHR',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'BWART',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'MATNR',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'WERKS',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'LIFNR',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'MENGE',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'MEINS',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'BUDAT_MKPF',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        }
+                        
+                        
+                  },
+                  OPTIONS: {
+                        (payload map ((payload01 , indexOfPayload01) -> {
+                              row: {
+                                    
+                                    TEXT: " ( EBELN EQ ('" ++ payload01.EBELN ++ "') ) OR"
+                                    
+                              }
+}))
+
+                  }
+            }
+      }
+}
+]]></dw:set-payload>
+                </dw:transform-message>
+                <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="RFC_READ_TABLE" outputXml="true" responseTimeout="10000" doc:name="SAP"/>
+                <dw:transform-message doc:name="Transform Message" metadata:id="4aecc4a5-20c1-428d-a045-3fba8746f17d">
+                    <dw:input-payload doc:sample="sample_data\RFC_READ_TABLE_1.xml"/>
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+
+---
+flatten 
+      payload.RFC_READ_TABLE.tables.DATA.*row[1..-1] map ((data , indexOfData) -> {
+         (payload.RFC_READ_TABLE.tables.FIELDS.*row map ((field , indexOfField) -> {
+             (field.FIELDNAME) : (data.WA splitBy ",")[indexOfField]
+         })) 
+  })]]></dw:set-payload>
+                </dw:transform-message>
+            </processor-chain>
+             <processor-chain>
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+---
+{
+      RFC_READ_TABLE: {
+            import: {
+                  DELIMITER: ',',
+                  NO_DATA: null,
+                  QUERY_TABLE: 'EKPO',
+                  ROWCOUNT: null,
+                  ROWSKIPS: null
+            },
+            tables: {
+                  DATA: {
+                        row: {
+                              WA: 'EKPO'
+                        }
+                  },
+                  FIELDS: {
+                        row: {
+                              FIELDNAME:'EBELN',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'EBELP',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'TXZ01',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'MATNR',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'WERKS',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'MATKL',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'MENGE',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'MEINS',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        }
+                        
+                        
+                  },
+                  OPTIONS: {
+                        (payload map ((payload01 , indexOfPayload01) -> {
+                              row: {
+                                    
+                                    TEXT: " ( EBELN EQ ('" ++ payload01.EBELN ++ "') ) OR"
+                                    
+                              }
+}))
+
+                  }
+            }
+      }
+}
+]]></dw:set-payload>
+                </dw:transform-message>
+                <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="RFC_READ_TABLE" outputXml="true" responseTimeout="10000" doc:name="SAP"/>
+                <dw:transform-message doc:name="Transform Message" metadata:id="4aecc4a5-20c1-428d-a045-3fba8746f17d">
+                    <dw:input-payload doc:sample="sample_data\RFC_READ_TABLE_1.xml"/>
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+
+---
+flatten 
+      payload.RFC_READ_TABLE.tables.DATA.*row[1..-1] map ((data , indexOfData) -> {
+         (payload.RFC_READ_TABLE.tables.FIELDS.*row map ((field , indexOfField) -> {
+             (field.FIELDNAME) : (data.WA splitBy ",")[indexOfField]
+         })) 
+  })]]></dw:set-payload>
+                </dw:transform-message>
+            </processor-chain>
+            <processor-chain>
+                <dw:transform-message doc:name="Transform Message" metadata:id="6150933c-0df7-4f6a-af27-15e58dd571c5">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+---
+{
+      RFC_READ_TABLE: {
+            import: {
+                  DELIMITER: ',',
+                  NO_DATA: null,
+                  QUERY_TABLE: 'EKET',
+                  ROWCOUNT: null,
+                  ROWSKIPS: null
+            },
+            tables: {
+                  DATA: {
+                        row: {
+                              WA: 'EBELN'
+                        }
+                  },
+                  FIELDS: {
+                        row: {
+                              FIELDNAME:'EBELN',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        },
+                        row: {
+                              FIELDNAME:'EINDT',
+                              OFFSET: '000000',
+                              LENGTH: '000000',
+                              TYPE: null,
+                              FIELDTEXT: null
+                        }
+                        
+                  },
+                  OPTIONS: {
+                        (payload map ((payload01 , indexOfPayload01) -> {
+                              row: {
+                                    
+                                    TEXT: " ( EBELN EQ ('" ++ payload01.EBELN ++ "') ) OR"
+                                    
+                              }
+}))
+
+                  }
+            }
+      }
+}
+]]></dw:set-payload>
+                </dw:transform-message>
+                <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="RFC_READ_TABLE" outputXml="true" responseTimeout="10000" doc:name="Copy_of_SAP"/>
+            </processor-chain>
+        </scatter-gather>
+       <!--  <scatter-gather doc:name="Scatter-Gather">
+            <processor-chain>
+                <dw:transform-message doc:name="Transform Message" metadata:id="856ea504-17a5-42f0-a568-4b1c20df0950">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+- - -
+payload[0]  map (AUFK) -> using (id = AUFK.OBJNR) {
+        OBJNR:id,
+            (payload[3] filter ($.*OBJNR contains id)  map (JEST) -> {
+                  STAT:JEST.STAT,
+                        INACT:JEST.INACT
+   })
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <file:outbound-endpoint path="D:\ABInbevAPO\Codebase\Test\Output" outputPattern="AUFK-JEST.json" responseTimeout="10000" doc:name="File"/>
+            </processor-chain>
+            <processor-chain>
+                <dw:transform-message doc:name="Transform Message" metadata:id="856ea504-17a5-42f0-a568-4b1c20df0950">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+- - -
+payload[0]  map (AUFK) -> using (id = AUFK.AUFNR) {
+        AUFNR:id,
+            (payload[1] filter ($.*AUFNR contains id)  map (AFKO) -> {
+               GSTRP:AFKO.GSTRP,
+               GLTRP:AFKO.GLTRP
+   })
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <file:outbound-endpoint path="D:\ABInbevAPO\Codebase\Test\Output" outputPattern="AUFK-AFKO.json" responseTimeout="10000" doc:name="File"/>
+            </processor-chain>
+        </scatter-gather> -->
+
+
+
+       
+        <exception-strategy ref="catchExceptionStrategy" doc:name="Reference Exception Strategy"/>
+    </flow>
+   
+    <catch-exception-strategy name="catchExceptionStrategy">
+    <logger message="Exception occured : IDOC Number - #[flowVars.DOCNUM]" level="INFO" doc:name="ExceptionFlow- START"/>
+        <set-payload value="#[exception.getSummaryMessage()]" doc:name="Set Payload"/>
+
+        <logger message="Exception Message : #[exception.message] - Exception Flow END" level="INFO" doc:name="ExceptionFlow END "/>
+    </catch-exception-strategy>
+    <sub-flow name="ab-us-edi-outboundSub_Flow">
+        <mulexml:dom-to-xml-transformer doc:name="DOM to XML"/>
+        <dw:transform-message doc:name="Transform Message" metadata:id="e5aeacc6-48f7-4fee-afcb-67136ccc66c1">
+            <dw:input-payload doc:sample="D:\ABInbevAPO\Codebase\Test\Output\000000000000002735-ZGST.xml" mimeType="application/xml"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xlsx
+---
+{
+      Sheet1: [{
+            MATERIAL: payload.BAPI_MATERIAL_GET_DETAIL.import.MATERIAL as :string,
+            MATERIAL_EXT: payload.BAPI_MATERIAL_GET_DETAIL.import.MATERIAL_EVG.MATERIAL_EXT,
+            MATERIAL_VERS: payload.BAPI_MATERIAL_GET_DETAIL.import.MATERIAL_EVG.MATERIAL_VERS,
+            MATERIAL_GUID: payload.BAPI_MATERIAL_GET_DETAIL.import.MATERIAL_EVG.MATERIAL_GUID,
+            PLANT: payload.BAPI_MATERIAL_GET_DETAIL.import.PLANT,
+            VALUATIONAREA: payload.BAPI_MATERIAL_GET_DETAIL.import.VALUATIONAREA,
+            VALUATIONTYPE: payload.BAPI_MATERIAL_GET_DETAIL.import.VALUATIONTYPE,
+            PUR_GROUP: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIALPLANTDATA.PUR_GROUP,
+            ISSUE_UNIT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIALPLANTDATA.ISSUE_UNIT,
+            PRICE_CTRL: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIALVALUATIONDATA.PRICE_CTRL,
+            MOVING_PR: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIALVALUATIONDATA.MOVING_PR as :string,
+            STD_PRICE: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIALVALUATIONDATA.STD_PRICE as :string,
+            PRICE_UNIT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIALVALUATIONDATA.PRICE_UNIT as :string,
+            CURRENCY: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIALVALUATIONDATA.CURRENCY,
+            CURRENCY_ISO: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIALVALUATIONDATA.CURRENCY_ISO,
+            MATL_DESC: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.MATL_DESC,
+            OLD_MAT_NO: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.OLD_MAT_NO,
+            MATL_TYPE: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.MATL_TYPE,
+            IND_SECTOR: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.IND_SECTOR,
+            DIVISION: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.DIVISION,
+            MATL_GROUP: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.MATL_GROUP,
+            PROD_HIER: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.PROD_HIER,
+            BASIC_MATL: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.BASIC_MATL,
+            STD_DESCR: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.STD_DESCR,
+            LAB_DESIGN: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.LAB_DESIGN,
+            PROD_MEMO: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.PROD_MEMO,
+            PAGEFORMAT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.PAGEFORMAT,
+            CONTAINER: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.CONTAINER,
+            STOR_CONDS: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.STOR_CONDS,
+            TEMP_CONDS: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.TEMP_CONDS,
+            BASE_UOM: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.BASE_UOM,
+            EAN_UPC: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.EAN_UPC,
+            EAN_CAT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.EAN_CAT,
+            SIZE_DIM: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.SIZE_DIM,
+            GROSS_WT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.GROSS_WT as :string,
+            NET_WEIGHT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.NET_WEIGHT as :string,
+            UNIT_OF_WT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.UNIT_OF_WT,
+            VOLUME: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.VOLUME as :string,
+            VOLUMEUNIT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.VOLUMEUNIT,
+            LENGTH: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.LENGTH as :string,
+            WIDTH: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.WIDTH as :string,
+            HEIGHT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.HEIGHT as :string,
+            UNIT_DIM: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.UNIT_DIM,
+            MANU_MAT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.MANU_MAT,
+            BASE_UOM_ISO: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.BASE_UOM_ISO,
+            UNIT_OF_WT_ISO: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.UNIT_OF_WT_ISO,
+            VOLUMEUNIT_ISO: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.VOLUMEUNIT_ISO,
+            UNIT_DIM_ISO: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.UNIT_DIM_ISO,
+            CREATED_ON: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.CREATED_ON,
+            CREATED_BY: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.CREATED_BY,
+            LAST_CHNGE: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.LAST_CHNGE,
+            CHANGED_BY: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.CHANGED_BY,
+            MATL_CAT: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.MATL_CAT,
+            EMPTIESBOM: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.EMPTIESBOM,
+            BASIC_MATL_NEW: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.BASIC_MATL_NEW,
+            TYPE: payload.BAPI_MATERIAL_GET_DETAIL.export.RETURN.TYPE,
+            CODE: payload.BAPI_MATERIAL_GET_DETAIL.export.RETURN.CODE,
+            MESSAGE: payload.BAPI_MATERIAL_GET_DETAIL.export.RETURN.MESSAGE,
+            LOG_NO: payload.BAPI_MATERIAL_GET_DETAIL.export.RETURN.LOG_NO,
+            LOG_MSG_NO: payload.BAPI_MATERIAL_GET_DETAIL.export.RETURN.LOG_MSG_NO as :string,
+            MESSAGE_V1: payload.BAPI_MATERIAL_GET_DETAIL.export.RETURN.MESSAGE_V1,
+            MESSAGE_V2: payload.BAPI_MATERIAL_GET_DETAIL.export.RETURN.MESSAGE_V2,
+            MESSAGE_V3: payload.BAPI_MATERIAL_GET_DETAIL.export.RETURN.MESSAGE_V3,
+            MESSAGE_V4: payload.BAPI_MATERIAL_GET_DETAIL.export.RETURN.MESSAGE_V4,
+            MFR_NO: payload.BAPI_MATERIAL_GET_DETAIL.export.MATERIAL_GENERAL_DATA.MFR_NO
+      }]
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <file:outbound-endpoint path="D:\ABInbevAPO\Codebase\Test\Output" outputPattern="#[flowVars.material+&quot;-&quot;+flowVars.plant].xls" responseTimeout="10000" doc:name="File"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+</mule>
