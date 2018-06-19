@@ -1,3 +1,1 @@
-
-Root Exception stack trace:
-com.sap.conn.rfc.exceptions.RfcGetException: A dynamically specified column name is unknown.
+Encoding UTF-8 does not match the one specified in the xml windows-1252.
