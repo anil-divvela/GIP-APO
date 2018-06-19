@@ -1,1 +1,3 @@
 
+Root Exception stack trace:
+com.sap.conn.rfc.exceptions.RfcGetException: A dynamically specified column name is unknown.
