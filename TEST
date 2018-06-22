@@ -1,16 +1,8 @@
 
-LOCATION    SAP-Gateway on host oneazrap1638.one.ofc.loc / sapgw00
-ERROR       registration of tp APO.AB1.MULESOFT from host
-            oneazrap088.one.ofc.loc not allowed
-TIME        Thu Jun 21 10:48:26 2018
-RELEASE     753
-COMPONENT   SAP-Gateway
-VERSION     2
-RC          720
-MODULE      /bas/753_REL/src/krn/si/gw/gwxxrd.c
-LINE        4173
-COUNTER     626
-
-    return code: RFC_REG_DENIED (25)
-    error group: 113
-    key: RFC_ERROR_REGISTRATION_DENIED
+<flow name="orderProcessingFlow">
+   <inbound-endpoint ref="orderconnector"/>
+   <enricher target="#[variable:paymentValidated]" source="/authorizenet/authorization/@valid">
+       <authorizenet:authorize cardNumber="/order/cc/number" />
+   </enricher>
+   <outbound-endpoint ref="orderStep2"/>
+</flow>
