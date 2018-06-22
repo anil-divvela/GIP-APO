@@ -1,8 +1,2 @@
 
-<flow name="orderProcessingFlow">
-   <inbound-endpoint ref="orderconnector"/>
-   <enricher target="#[variable:paymentValidated]" source="/authorizenet/authorization/@valid">
-       <authorizenet:authorize cardNumber="/order/cc/number" />
-   </enricher>
-   <outbound-endpoint ref="orderStep2"/>
-</flow>
+<enricher source="#[Integer.parseInt(payload.n1)+Integer.parseInt(payload.n2)]" target="#[flowVars.var1]" doc:name="Message Enricher">
