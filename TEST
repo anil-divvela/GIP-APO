@@ -1,2 +1,34 @@
 
 <enricher source="#[Integer.parseInt(payload.n1)+Integer.parseInt(payload.n2)]" target="#[flowVars.var1]" doc:name="Message Enricher">
+
+
+
+- Exception occured on APO.AB1.MULESOFT connection 1-172.18.214.15|3300|APO.AB1.MULESOFT: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host oneazrap1638.one.ofc.loc / sapgw00
+ERROR       registration of tp APO.AB1.MULESOFT from host ??? not allowed
+TIME        Tue Jun 26 08:47:52 2018
+RELEASE     753
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/753_REL/src/krn/si/gw/gwxxrd.c
+LINE        4173
+COUNTER     42
+ RfcException:
+    message: CPIC-CALL: SAP_CMACCPTP3 on convId:         
+
+LOCATION    SAP-Gateway on host oneazrap1638.one.ofc.loc / sapgw00
+ERROR       registration of tp APO.AB1.MULESOFT from host ??? not allowed
+TIME        Tue Jun 26 08:47:52 2018
+RELEASE     753
+COMPONENT   SAP-Gateway
+VERSION     2
+RC          720
+MODULE      /bas/753_REL/src/krn/si/gw/gwxxrd.c
+LINE        4173
+COUNTER     42
+
+    return code: RFC_REG_DENIED (25)
+    error group: 113
+    key: RFC_ERROR_REGISTRATION_DENIED
